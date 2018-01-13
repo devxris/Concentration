@@ -19,9 +19,8 @@ class ViewController: UIViewController {
 	var numberOfParisOfCards: Int { return (cardButtons.count + 1) / 2 } // read-only computed property
 	
 	private(set) var flipCount = 0 { didSet { flipCountLabel.text = "Flips: \(flipCount)" } }
-	
-	var emojiChoices = ["🎃", "👻", "👿", "🙀", "🦇", "🍎", "🍭", "🍬", "😱"]
-	var emoji = [Card: String]() // Card conforms th Hashable
+	private var emojiChoices = "🎃👻👿🙀🦇🍎🍭🍬😱"
+	private var emoji = [Card: String]() // Card conforms th Hashable
 	
 	// MARK: Storyboard
 	
@@ -57,7 +56,8 @@ class ViewController: UIViewController {
 	
 	private func emoji(for card: Card) -> String {
 		if emoji[card] == nil, emojiChoices.count > 0 {
-			emoji[card] = emojiChoices.remove(at: emojiChoices.count.arc4random)
+			let randomStringIndex = emojiChoices.index(emojiChoices.startIndex, offsetBy: emojiChoices.count.arc4random)
+			emoji[card] = String(emojiChoices.remove(at: randomStringIndex))
 		}
 		return emoji[card] ?? "?"
 	}
