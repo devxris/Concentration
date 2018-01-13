@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Concentration {
+struct Concentration {
 	
 	private(set) var cards = [Card]() // store property
 	
@@ -44,7 +44,7 @@ class Concentration {
 		// TODO: Suffle the cards
 	}
 	
-	func chooseCard(at index: Int) { // game logic
+	mutating func chooseCard(at index: Int) { // game logic
 		
 		assert(cards.indices.contains(index), "Concentration.chooseCard(at: \(index): chosen index not in the cards.")
 		
