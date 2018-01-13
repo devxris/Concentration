@@ -10,8 +10,9 @@ import Foundation
 
 class Concentration {
 	
-	var cards = [Card]() // store property
-	var indexOfIneAndOnlyFaceUpCard: Int? { // computed property
+	private(set) var cards = [Card]() // store property
+	
+	private var indexOfIneAndOnlyFaceUpCard: Int? { // computed property
 		get {
 			var foundIndex: Int?
 			for index in cards.indices {
@@ -33,6 +34,9 @@ class Concentration {
 	}
 	
 	init(numberOfParisOfCards: Int) {
+		
+		assert(numberOfParisOfCards > 0, "Concentration.init(\(numberOfParisOfCards)): You must have at least one pair of cards.")
+		
 		for _ in 0..<numberOfParisOfCards {
 			let card = Card()
 			cards += [card, card]
@@ -41,6 +45,9 @@ class Concentration {
 	}
 	
 	func chooseCard(at index: Int) { // game logic
+		
+		assert(cards.indices.contains(index), "Concentration.chooseCard(at: \(index): chosen index not in the cards.")
+		
 		// 3 options: all face down, one up not matched, one up matched
 		if !cards[index].isMatched {
 			if let matchIndex = indexOfIneAndOnlyFaceUpCard, matchIndex != index {
