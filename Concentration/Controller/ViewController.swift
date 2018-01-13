@@ -12,9 +12,11 @@ class ViewController: UIViewController {
 	
 	// MARK: Model
 	
-	lazy var game = Concentration(numberOfParisOfCards: (self.cardButtons.count + 1) / 2) // Can't user property observers
+	lazy var game = Concentration(numberOfParisOfCards: self.numberOfParisOfCards) // Can't user property observers
 	
 	// MARK: Properties
+	
+	var numberOfParisOfCards: Int { return (cardButtons.count + 1) / 2 } // read-only computed property
 	
 	var flipCount = 0 {
 		didSet {
