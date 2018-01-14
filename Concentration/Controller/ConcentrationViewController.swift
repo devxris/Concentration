@@ -9,7 +9,7 @@
 import UIKit
 
 class ConcentrationViewController: UIViewController {
-	
+		
 	// MARK: Model
 	
 	private lazy var game = Concentration(numberOfParisOfCards: self.numberOfParisOfCards) // Can't user property observers
