@@ -8,7 +8,11 @@
 
 import UIKit
 
-class ConcentrationThemeChooserViewController: UIViewController, UISplitViewControllerDelegate {
+class ConcentrationThemeChooserViewController: VCLLoggingViewController, UISplitViewControllerDelegate {
+	
+	// MARK: VCLLoggingViewController
+	override var vclLoggingName: String { return "ThemeChooser" }
+
 	
 	// MARK: UISplitViewControllerDelegate
 	

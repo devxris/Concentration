@@ -8,7 +8,10 @@
 
 import UIKit
 
-class ConcentrationViewController: UIViewController {
+class ConcentrationViewController: VCLLoggingViewController {
+	
+	// MARK: VCLLoggingViewController
+	override var vclLoggingName: String { return "Game" }
 		
 	// MARK: Model
 	
