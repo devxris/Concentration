@@ -39,23 +39,33 @@ class ConcentrationViewController: VCLLoggingViewController {
 	@IBOutlet private weak var flipCountLabel: UILabel! { didSet { updateFlipCountLabel() } }
 	@IBOutlet private var cardButtons: [UIButton]!
 	
+	// along with autolayout and replace original cardButtons, needs to notify viewDidLayoutSubviews to update model
+	private var visibleCardButtons: [UIButton]! {
+		return cardButtons?.filter { !$0.superview!.isHidden }
+	}
+	
+	override func viewDidLayoutSubviews() {
+		super.viewDidLayoutSubviews()
+		updateViewsFromModel()
+	}
+	
 	@IBAction private func touchCard(_ sender: UIButton) {
 		flipCount += 1
-		if let cardNumber = cardButtons.index(of: sender) {
+		if let cardNumber = visibleCardButtons.index(of: sender) {
 			game.chooseCard(at: cardNumber)
 			updateViewsFromModel()
 			
 		} else {
-			print("chosen card was not in cardButtons")
+			print("chosen card was not in visibleCardButtons")
 		}
 	}
 	
 	// MARK: Private Funcs
 	
 	private func updateViewsFromModel() {
-		if cardButtons != nil { // ensure cardButtons are set before prepare(for segue)
-			for index in cardButtons.indices {
-				let button = cardButtons[index]
+		if visibleCardButtons != nil { // ensure visibleCardButtons are set before prepare(for segue)
+			for index in visibleCardButtons.indices {
+				let button = visibleCardButtons[index]
 				let card = game.cards[index]
 				if card.isFaceUp {
 					button.setTitle(emoji(for: card), for: .normal)
@@ -73,8 +83,15 @@ class ConcentrationViewController: VCLLoggingViewController {
 			.strokeWidth: 5.0,
 			.strokeColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
 		]
-		let attributedString = NSAttributedString(string: "Flips: \(flipCount)", attributes: attributes)
+		let attributedString = NSAttributedString( // need to notify traitCollectionDidChange to update label
+			string: traitCollection.verticalSizeClass == .compact ? "Flip\n\(flipCount)" : "Flips: \(flipCount)",
+			attributes: attributes)
 		flipCountLabel.attributedText = attributedString
+	}
+	
+	override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+		super.traitCollectionDidChange(previousTraitCollection)
+		updateFlipCountLabel()
 	}
 	
 	private func emoji(for card: Card) -> String {
